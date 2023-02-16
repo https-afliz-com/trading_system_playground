@@ -15,74 +15,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDataDrift = void 0;
 const axios_1 = __importDefault(require("axios"));
 const getDataDrift = () => __awaiter(void 0, void 0, void 0, function* () {
-    // const dataSOL = await axios.get(
-    //   "https://mainnet-beta.api.drift.trade/trades?marketIndex=0&marketType=perp"
-    // );
-    const dataBTC = yield axios_1.default.get("https://mainnet-beta.api.drift.trade/trades?marketIndex=1&marketType=perp");
-    // const dataETH = await axios.get(
-    //   "https://mainnet-beta.api.drift.trade/trades?marketIndex=2&marketType=perp"
-    // );
+    const dataSOL = yield axios_1.default.get("https://mainnet-beta.api.drift.trade/trades?marketIndex=0&marketType=perp");
     //   let dataSolMap: any = [];
-    // console.log(dataSOL.data);
-    console.log(dataBTC.data);
-    // console.log(dataETH.data);
-    // const dataSolMap = dataSOL.data.data.trades.map((item: any) => {
-    //   if (item.actionExplanation !== "orderFilledWithMatch") return null;
-    //   else
-    //     return {
-    //       sizeAsk: parseFloat(item.makerOrderBaseAssetAmount),
-    //       ask:
-    //         parseFloat(item.makerOrderCumulativeQuoteAssetAmountFilled) /
-    //         parseFloat(item.makerOrderCumulativeBaseAssetAmountFilled),
-    //       typeAsk: item.takerOrderDirection,
-    //       sizeBid: parseFloat(item.takerOrderBaseAssetAmount),
-    //       bid:
-    //         parseFloat(item.takerOrderCumulativeQuoteAssetAmountFilled) /
-    //         parseFloat(item.takerOrderCumulativeBaseAssetAmountFilled),
-    //       typeBid: item.makerOrderDirection,
-    //       oraclePrice: item.oraclePrice,
-    //       createAt: Date.now().toLocaleString(),
-    //     };
-    // });
-    const dataBTCMap = dataBTC.data.data.trades.map((item) => {
+    console.log(dataSOL.data);
+    const dataSolMap = dataSOL.data.data.trades.map((item) => {
         if (item.actionExplanation !== "orderFilledWithMatch")
             return null;
         else
             return {
                 sizeAsk: parseFloat(item.makerOrderBaseAssetAmount),
-                ask: (parseFloat(item.takerOrderBaseAssetAmount) - parseFloat(item.takerOrderCumulativeBaseAssetAmountFilled)) /
-                    parseFloat(item.makerOrderCumulativeBaseAssetAmountFilled) * parseFloat(item.oraclePrice),
+                ask: parseFloat(item.makerOrderCumulativeQuoteAssetAmountFilled) /
+                    parseFloat(item.makerOrderCumulativeBaseAssetAmountFilled),
                 typeAsk: item.takerOrderDirection,
                 sizeBid: parseFloat(item.takerOrderBaseAssetAmount),
-                bid: (parseFloat(item.makerOrderBaseAssetAmount) - parseFloat(item.makerOrderCumulativeBaseAssetAmountFilled)) /
-                    parseFloat(item.takerOrderCumulativeBaseAssetAmountFilled) * parseFloat(item.oraclePrice),
+                bid: parseFloat(item.takerOrderCumulativeQuoteAssetAmountFilled) /
+                    parseFloat(item.takerOrderCumulativeBaseAssetAmountFilled),
                 typeBid: item.makerOrderDirection,
                 oraclePrice: item.oraclePrice,
-                createAt: Date.now().toLocaleString(),
+                createAt: Date.now(),
             };
     });
-    // const dataETHMap = dataSOL.data.data.trades.map((item: any) => {
-    //   if (item.actionExplanation !== "orderFilledWithMatch") return null;
-    //   else
-    //     return {
-    //       sizeAsk: parseFloat(item.makerOrderBaseAssetAmount),
-    //       ask:
-    //         parseFloat(item.makerOrderCumulativeQuoteAssetAmountFilled) /
-    //         parseFloat(item.makerOrderCumulativeBaseAssetAmountFilled),
-    //       typeAsk: item.takerOrderDirection,
-    //       sizeBid: parseFloat(item.takerOrderBaseAssetAmount),
-    //       bid:
-    //         parseFloat(item.takerOrderCumulativeQuoteAssetAmountFilled) /
-    //         parseFloat(item.takerOrderCumulativeBaseAssetAmountFilled),
-    //       typeBid: item.makerOrderDirection,
-    //       oraclePrice: item.oraclePrice,
-    //       createAt: Date.now().toLocaleString(),
-    //     };
-    // });
-    // return dataSolMap;
-    return dataBTCMap;
-    // return dataETHMap;
-    // bitcoin
+    return dataSolMap;
+    //   const dataBTC = await axios.get(
+    //     "https://mainnet-beta.api.drift.trade/trades?marketIndex=1&marketType=perp"
+    //   );
     //   const dataETH = await axios.get(
     //     "https://mainnet-beta.api.drift.trade/trades?marketIndex=2&marketType=perp"
     //   );
